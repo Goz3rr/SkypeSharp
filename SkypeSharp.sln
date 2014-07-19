@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.30501.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SkypeSharp", "SkypeSharp\SkypeSharp.csproj", "{E934F90F-2C91-4322-B166-9EE79C555A3E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SkypeTest", "SkypeTest\SkypeTest.csproj", "{2996FD7D-F97C-4BF4-AB0D-982DAA1A08AB}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E934F90F-2C91-4322-B166-9EE79C555A3E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E934F90F-2C91-4322-B166-9EE79C555A3E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E934F90F-2C91-4322-B166-9EE79C555A3E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E934F90F-2C91-4322-B166-9EE79C555A3E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2996FD7D-F97C-4BF4-AB0D-982DAA1A08AB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2996FD7D-F97C-4BF4-AB0D-982DAA1A08AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2996FD7D-F97C-4BF4-AB0D-982DAA1A08AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2996FD7D-F97C-4BF4-AB0D-982DAA1A08AB}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
