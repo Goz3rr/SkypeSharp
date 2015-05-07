@@ -1,12 +1,22 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
+using SkypeSharp;
 
 namespace SkypeTest {
-    class Program {
-        static void Main(string[] args) {
+    internal class Program {
+        private static void Main(string[] args) {
+            Skype skype = new Skype("skypetestthing");
+            Console.WriteLine(skype.Attach());
+            Console.WriteLine(skype.GetVersion());
+
+            skype.OnMessageReceived += delegate(object sender, MessageEventArgs e) {
+                if(e.Message.SenderHandle != "gozbot") {
+                    //Console.WriteLine(e.Message.Body);
+                    e.Message.Chat.Send("Got your message: " + e.Message.Body);
+                }
+            };
+
+            skype.Listen();
         }
     }
 }
