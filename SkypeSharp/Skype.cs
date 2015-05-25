@@ -16,6 +16,9 @@ namespace SkypeSharp {
         void Notify(string message);
     }
 
+    public delegate void MessageEventHandler(object sender, ChatMessage message, ChatMessageStatus status);
+    public delegate void CallEventHandler(object sender, Call call, CallStatus status);
+
     public class Skype {
         private class SkypeResponseHandler : ISkypeResponse {
             public event NotifiedEventHandler OnNotified;
@@ -29,8 +32,6 @@ namespace SkypeSharp {
             }
 
             public void Notify(string message) {
-                Console.WriteLine("<< " + message);
-
                 if(OnNotified != null) OnNotified.Invoke(this, new NotifiedEventArgs(message));
             }
         }
@@ -43,9 +44,8 @@ namespace SkypeSharp {
         public int Protocol { get; private set; }
         public bool Attached { get; private set; }
 
-        public event MessageEventHandler OnMessageSent;
-        public event MessageEventHandler OnMessageReceived;
-        public event MessageEventHandler OnMessageRead;
+        public event MessageEventHandler OnMessageStatusChanged;
+        public event CallEventHandler OnCallStatusChanged;
 
         public Skype(string name, int protocol = 5) {
             Name = name;
@@ -53,7 +53,6 @@ namespace SkypeSharp {
         }
 
         public string Send(string message) {
-            Console.WriteLine(">> " + message);
             return skypeSend.Invoke(message);
         }
 
@@ -66,24 +65,7 @@ namespace SkypeSharp {
             try {
                 skypeSend = dbus.GetObject<ISkypeSend>("com.Skype.API", new ObjectPath("/com/Skype"));
                 skypeResponse = new SkypeResponseHandler(dbus);
-                skypeResponse.OnNotified += delegate(object sender, NotifiedEventArgs e) {
-                    if(e.Message.StartsWith("CHATMESSAGE ")) {
-                        string data = e.Message.Substring("CHATMESSAGE ".Length);
-                        string[] split = data.Split(' ');
-
-                        if(split[1] == "STATUS") {
-                            ChatMessage msg = new ChatMessage(this, split[0]);
-
-                            if(split[2] == "SENT") {
-                                if(OnMessageSent != null) OnMessageSent.Invoke(this, new MessageEventArgs(msg));
-                            } else if(split[2] == "RECEIVED") {
-                                if(OnMessageReceived != null) OnMessageReceived.Invoke(this, new MessageEventArgs(msg));
-                            } else if(split[2] == "READ") {
-                                if(OnMessageRead != null) OnMessageRead.Invoke(this, new MessageEventArgs(msg));
-                            }
-                        }
-                    }
-                };
+                skypeResponse.OnNotified += OnNotified;
             } catch(Exception e) {
                 Console.WriteLine("Skype DBUS initialization error: {0}", e);
                 return false;
@@ -108,6 +90,37 @@ namespace SkypeSharp {
             return true;
         }
 
+        private void OnNotified(object sender, NotifiedEventArgs e) {
+            //string[] parts = e.Message.Split(' ');
+            //Console.WriteLine(">> Got notified with command " + parts[0]);
+
+            if (e.Message.StartsWith("CHATMESSAGE ")) {
+                string data = e.Message.Substring("CHATMESSAGE ".Length);
+                string[] split = data.Split(' ');
+
+                if (split[1] == "STATUS") {
+                    ChatMessage msg = new ChatMessage(this, split[0]);
+
+                    ChatMessageStatus status;
+                    Enum.TryParse(split[2], true, out status);
+
+                    if(OnMessageStatusChanged != null) OnMessageStatusChanged.Invoke(this, msg, status);
+                }
+            } else if (e.Message.StartsWith("CALL ")) {
+                string data = e.Message.Substring("CALL ".Length);
+                string[] split = data.Split(' ');
+
+                if (split[1] == "STATUS") {
+                    Call call = new Call(this, split[0]);
+
+                    CallStatus status;
+                    Enum.TryParse(split[2], true, out status);
+
+                    if(OnCallStatusChanged != null) OnCallStatusChanged.Invoke(this, call, status);
+                }
+            }
+        }
+
         public void Listen() {
             while(Attached) {
                 Bus.Session.Iterate();
@@ -119,6 +132,10 @@ namespace SkypeSharp {
             string args = String.Join(" ", property);
             string response = Send("GET " + args);
             return response.Substring(args.Length + 1);
+        }
+
+        public void SetProperty(string name, string value) {
+            Send(String.Format("SET {0} {1}", name, value));
         }
 
         public string GetVersion() {

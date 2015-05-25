@@ -43,9 +43,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Call.cs" />
     <Compile Include="Chat.cs" />
     <Compile Include="ChatMessage.cs" />
-    <Compile Include="MessageEventArgs.cs" />
     <Compile Include="NotifiedEventArgs.cs" />
     <Compile Include="Skype.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
