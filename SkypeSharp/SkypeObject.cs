@@ -24,9 +24,12 @@ namespace SkypeSharp {
             return response.Substring(args.Length + 1);
         }
 
-        protected void SetProperty(string property, string value) {
-            string message = "SET " + Name + " " + ID + " " + property + " " + value;
-            if(Skype.Send(message) != message) throw new SkypeErrorException(message);
+        protected void SetProperty(string property, string value = null) {
+            string message = String.Join(" ", "SET", Name, ID, property);
+            if(value != null) message += " " + value;
+
+            string response = Skype.Send(message);
+            //if(response != message) throw new SkypeErrorException(String.Format("Expected '{0}' got '{1}'", message, response));
         }
 
         protected void Alter(params string[] property) {
