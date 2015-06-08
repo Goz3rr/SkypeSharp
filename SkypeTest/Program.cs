@@ -9,10 +9,10 @@ namespace SkypeTest {
             Console.WriteLine(skype.Attach());
             Console.WriteLine(skype.GetVersion());
 
-            skype.OnMessageReceived += delegate(object sender, MessageEventArgs e) {
-                if(e.Message.SenderHandle != "gozbot") {
+            skype.OnMessageStatusChanged += delegate(object sender, ChatMessage message, ChatMessageStatus status) {
+                if(message.SenderHandle != "gozbot") {
                     //Console.WriteLine(e.Message.Body);
-                    e.Message.Chat.Send("Got your message: " + e.Message.Body);
+                    message.Chat.Send("Got your message: " + message.Body);
                 }
             };
 

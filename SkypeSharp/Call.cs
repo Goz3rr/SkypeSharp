@@ -27,9 +27,15 @@
         Transferred
     }
 
+    /// <summary>
+    ///     Class representing a Skype CALL object
+    /// </summary>
     public class Call : SkypeObject {
         public Call(Skype skype, string id) : base(skype, id, "CALL") { }
 
+        /// <summary>
+        ///     Hang up call
+        /// </summary>
         public void Finish() {
             Alter("END", "HANGUP");
         }
