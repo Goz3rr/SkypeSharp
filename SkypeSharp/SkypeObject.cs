@@ -42,14 +42,12 @@ namespace SkypeSharp {
             return response.Substring(args.Length + 1);
         }
 
+        /// <summary>
         ///     Set a property of this object
         /// </summary>
-        /// <param name="property">Property name</param>
-        /// <param name="value">New value</param>
-        protected void SetProperty(string property, string value = null) {
-            string message = String.Join(" ", "SET", Name, ID, property);
-            if(value != null) message += " " + value;
-
+        /// <param name="property">Arguments, joined with spaces</param>
+        protected string SetProperty(params string[] property) {
+            string message = Name + " " + ID + " " + String.Join(" ", property);
             return Skype.Send(message);
         }
 
