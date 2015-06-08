@@ -19,6 +19,9 @@ namespace SkypeSharp {
     public delegate void MessageEventHandler(object sender, ChatMessage message, ChatMessageStatus status);
     public delegate void CallEventHandler(object sender, Call call, CallStatus status);
 
+    /// <summary>
+    ///     Skype wrapper
+    /// </summary>
     public class Skype {
         private class SkypeResponseHandler : ISkypeResponse {
             public event NotifiedEventHandler OnNotified;
@@ -40,11 +43,29 @@ namespace SkypeSharp {
         private ISkypeSend skypeSend;
         private SkypeResponseHandler skypeResponse;
 
+        /// <summary>
+        ///     Friendly name to be used when connecting to skype
+        /// </summary>
         public string Name { get; private set; }
+
+        /// <summary>
+        ///     Protocol version, Defaults to 5
+        /// </summary>
         public int Protocol { get; private set; }
+
+        /// <summary>
+        ///     Is API attached to Skype
+        /// </summary>
         public bool Attached { get; private set; }
 
+        /// <summary>
+        ///     Event invoked when CHATMESSAGE status changes (Sent, Received, Read)
+        /// </summary>
         public event MessageEventHandler OnMessageStatusChanged;
+
+        /// <summary>
+        ///     Event invoked when CALL status changes
+        /// </summary>
         public event CallEventHandler OnCallStatusChanged;
 
         public Skype(string name, int protocol = 5) {
@@ -52,10 +73,19 @@ namespace SkypeSharp {
             Protocol = protocol;
         }
 
+        /// <summary>
+        ///     Send raw message over DBUS
+        /// </summary>
+        /// <param name="message">Message to be sent</param>
+        /// <returns>Response from Skype</returns>
         public string Send(string message) {
             return skypeSend.Invoke(message);
         }
 
+        /// <summary>
+        ///     Attach to Skype
+        /// </summary>
+        /// <returns></returns>
         public bool Attach() {
             if(dbus == null) {
                 Console.WriteLine("Environment variable DBUS_SESSION_BUS_ADDRESS not set!");
@@ -121,6 +151,9 @@ namespace SkypeSharp {
             }
         }
 
+        /// <summary>
+        ///     Start listening for DBUS messages, blocks thread until detached
+        /// </summary>
         public void Listen() {
             while(Attached) {
                 Bus.Session.Iterate();
@@ -128,16 +161,30 @@ namespace SkypeSharp {
             }
         }
 
+        /// <summary>
+        ///     Get a Skype property
+        /// </summary>
+        /// <param name="property">Arguments, joined with spaces</param>
+        /// <returns>Property value</returns>
         public string GetProperty(params string[] property) {
             string args = String.Join(" ", property);
             string response = Send("GET " + args);
             return response.Substring(args.Length + 1);
         }
 
+        /// <summary>
+        ///     Set a Skype property
+        /// </summary>
+        /// <param name="name">Property name</param>
+        /// <param name="value">New value</param>
         public void SetProperty(string name, string value) {
             Send(String.Format("SET {0} {1}", name, value));
         }
 
+        /// <summary>
+        ///     Get skype version
+        /// </summary>
+        /// <returns>Skype version</returns>
         public string GetVersion() {
             return GetProperty("SKYPEVERSION");
         }
