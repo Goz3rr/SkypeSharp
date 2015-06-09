@@ -39,7 +39,16 @@ namespace SkypeSharp {
         protected string GetProperty(params string[] property) {
             string args = Name + " " + ID + " " + String.Join(" ", property);
             string response = Skype.Send("GET " + args);
-            return response.Substring(args.Length + 1);
+
+            if(response.StartsWith("GET " + args)) {
+                try {
+                    return response.Substring(args.Length + 1);
+                } catch(ArgumentOutOfRangeException) {
+                    return "";
+                }
+            }
+
+            return response;
         }
 
         /// <summary>
