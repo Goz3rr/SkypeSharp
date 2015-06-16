@@ -16,6 +16,17 @@ namespace SkypeSharp {
             }
         }
 
+        /// <summary>
+        ///     List of chatmembers, useful for changing roles
+        ///     Skype broke this so it probably doesn't work
+        /// </summary>
+        public IEnumerable<ChatMember> ChatMembers {
+            get {
+                string[] members = GetProperty("MEMBEROBJECTS").Split(' ');
+                return members.Select(m => new ChatMember(Skype, m));
+            }
+        }
+
         public Chat(Skype skype, string id) : base(skype, id, "CHAT") {}
 
         /// <summary>

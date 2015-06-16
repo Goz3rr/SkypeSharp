@@ -66,17 +66,17 @@ namespace SkypeSharp {
         /// </summary>
         /// <param name="property">Arguments, joined with spaces</param>
         protected string SetProperty(params string[] property) {
-            string message = Name + " " + ID + " " + String.Join(" ", property);
-            return Skype.Send(message);
+            string args = Name + " " + ID + " " + String.Join(" ", property);
+            return Skype.Send("SET " + args);
         }
 
         /// <summary>
         ///     Alter a property of this object
         /// </summary>
         /// <param name="property">Arguments, joined with spaces</param>
-        protected void Alter(params string[] property) {
-            string message = "ALTER " + Name + " " + ID + " " + String.Join(" ", property);
-            if(Skype.Send(message) != message) throw new SkypeErrorException(message);
+        protected string Alter(params string[] property) {
+            string args = Name + " " + ID + " " + String.Join(" ", property);
+            return Skype.Send("ALTER " + args);
         }
     }
 }

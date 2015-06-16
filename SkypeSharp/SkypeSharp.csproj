@@ -45,6 +45,7 @@
   <ItemGroup>
     <Compile Include="Call.cs" />
     <Compile Include="Chat.cs" />
+    <Compile Include="ChatMember.cs" />
     <Compile Include="ChatMessage.cs" />
     <Compile Include="NotifiedEventArgs.cs" />
     <Compile Include="Skype.cs" />

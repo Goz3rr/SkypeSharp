@@ -38,11 +38,12 @@
             get { return senderName ?? (senderName = GetProperty("FROM_DISPNAME")); }
         }
 
+        private string body;
         /// <summary>
         ///     Content of the message
         /// </summary>
         public string Body {
-            get { return GetProperty("BODY"); }
+            get { return body ?? (body = GetProperty("BODY")); }
         }
 
         private User user;
