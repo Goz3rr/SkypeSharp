@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 
 namespace SkypeSharp {
@@ -46,15 +47,21 @@ namespace SkypeSharp {
         public void SendRaw(string text) {
             Skype.Send("OPEN CHAT " + ID);
 
-            Process p = new Process();
-            p.StartInfo.FileName = "/usr/bin/xdotool";
-            p.StartInfo.Arguments = String.Format("search --name skype type \"{0}\"", text.Replace("\"", "\\\""));
-            p.Start();
-            p.WaitForExit();
+            using(StreamWriter s = new StreamWriter("clipboard.tmp")) {
+                s.Write(text);
+            }
 
-            p.StartInfo.Arguments = "search --name skype key ctrl+shift+Return";
-            p.Start();
-            p.WaitForExit();
+            Process xclip = new Process();
+            xclip.StartInfo.FileName = "/usr/bin/xclip";
+            xclip.StartInfo.Arguments = "-i clipboard.tmp -selection clipboard";
+            xclip.Start();
+            xclip.WaitForExit();
+            
+            Process xdo = new Process();
+            xdo.StartInfo.FileName = "/usr/bin/xdotool";
+            xdo.StartInfo.Arguments = "search --name skype key ctrl+v+ctrl+shift+Return";
+            xdo.Start();
+            xdo.WaitForExit();
         }
     }
 }
