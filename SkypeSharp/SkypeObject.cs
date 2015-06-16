@@ -40,7 +40,7 @@ namespace SkypeSharp {
             string args = Name + " " + ID + " " + String.Join(" ", property);
             string response = Skype.Send("GET " + args);
 
-            if(response.StartsWith("GET " + args)) {
+            if(response.StartsWith(args)) {
                 try {
                     return response.Substring(args.Length + 1);
                 } catch(ArgumentOutOfRangeException) {
@@ -49,6 +49,16 @@ namespace SkypeSharp {
             }
 
             return response;
+        }
+
+        /// <summary>
+        ///     Get a boolean property from this object
+        /// </summary>
+        /// <param name="property">Arguments, joined with spaces</param>
+        /// <returns>Skype response converted to boolean</returns>
+        protected bool GetBoolProperty(params string[] property) {
+            string response = GetProperty(property);
+            return response.ToUpper() == "TRUE";
         }
 
         /// <summary>
