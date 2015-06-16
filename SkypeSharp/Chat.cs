@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 
 namespace SkypeSharp {
@@ -35,6 +37,24 @@ namespace SkypeSharp {
         /// <param name="text">Text to send</param>
         public void Send(string text) {
             Skype.Send("CHATMESSAGE " + ID + " " + text);
+        }
+
+        /// <summary>
+        ///     Uses xdotool to attempt to send skype a message
+        /// </summary>
+        /// <param name="text"></param>
+        public void SendRaw(string text) {
+            Skype.Send("OPEN CHAT " + ID);
+
+            Process p = new Process();
+            p.StartInfo.FileName = "/usr/bin/xdotool";
+            p.StartInfo.Arguments = String.Format("search --name skype type \"{0}\"", text.Replace("\"", "\\\""));
+            p.Start();
+            p.WaitForExit();
+
+            p.StartInfo.Arguments = "search --name skype key ctrl+shift+Return";
+            p.Start();
+            p.WaitForExit();
         }
     }
 }
