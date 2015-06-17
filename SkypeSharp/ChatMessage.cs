@@ -1,4 +1,6 @@
-﻿namespace SkypeSharp {
+﻿using System;
+
+namespace SkypeSharp {
     public enum ChatMessageStatus {
         Unknown,
         Sending,
@@ -7,12 +9,30 @@
         Read
     }
 
+    public enum ChatMessageType {
+        Unknown,
+        SetTopic,
+        Said,
+        AddedMembers,
+        SawMembers,
+        CreatedChatWith,
+        Left,
+        PostedContacts,
+        Gap_In_Chat,
+        SetRole,
+        Kicked,
+        KickBanned,
+        SetOptions,
+        SetPicture,
+        SetGuidelines,
+        JoinedAsApplicant
+    }
+
     /// <summary>
     ///     Class representing a Skype CHATMESSAGE object
     /// </summary>
     public class ChatMessage : SkypeObject {
         private string time;
-
         /// <summary>
         ///     Time of this message, UNIX timestamp
         /// </summary>
@@ -21,18 +41,16 @@
         }
 
         private string senderHandle;
-
         /// <summary>
-        ///     Handle of the sender, same as <see cref="P:User.ID"/>
+        ///     Handle of the sender, same as <see cref="P:User.ID" />
         /// </summary>
         public string SenderHandle {
             get { return senderHandle ?? (senderHandle = GetProperty("FROM_HANDLE")); }
         }
 
         private string senderName;
-
         /// <summary>
-        ///     Friendly name of the sender, same as <see cref="P:User.FullName"/>
+        ///     Friendly name of the sender, same as <see cref="P:User.FullName" />
         /// </summary>
         public string SenderName {
             get { return senderName ?? (senderName = GetProperty("FROM_DISPNAME")); }
@@ -47,7 +65,6 @@
         }
 
         private User user;
-
         /// <summary>
         ///     User that sent the message
         /// </summary>
@@ -56,21 +73,24 @@
         }
 
         private string chatName;
-
         /// <summary>
-        ///     Identifier of chat this message is from, same as <see cref="P:Chat.ID"/>
+        ///     Identifier of chat this message is from, same as <see cref="P:Chat.ID" />
         /// </summary>
         public string ChatName {
             get { return chatName ?? (chatName = GetProperty("CHATNAME")); }
         }
 
         private Chat chat;
-
         /// <summary>
         ///     Chat this message is from
         /// </summary>
         public Chat Chat {
             get { return chat ?? (chat = new Chat(Skype, ChatName)); }
+        }
+
+        private ChatMessageType? type;
+        public ChatMessageType Type {
+            get { return (ChatMessageType)(type ?? (type = (ChatMessageType)Enum.Parse(typeof(ChatMessageType), GetProperty("TYPE"), true))); }
         }
 
         public ChatMessage(Skype skype, string id) : base(skype, id, "CHATMESSAGE") {}
