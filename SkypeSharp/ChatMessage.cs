@@ -25,7 +25,8 @@ namespace SkypeSharp {
         SetOptions,
         SetPicture,
         SetGuidelines,
-        JoinedAsApplicant
+        JoinedAsApplicant,
+        Emoted
     }
 
     /// <summary>
