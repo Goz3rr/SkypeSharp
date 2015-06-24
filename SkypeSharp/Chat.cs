@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -51,15 +50,21 @@ namespace SkypeSharp {
                 s.Write(text);
             }
 
-            Process xclip = new Process();
-            xclip.StartInfo.FileName = "/usr/bin/xclip";
-            xclip.StartInfo.Arguments = "-i clipboard.tmp -selection clipboard";
+            Process xclip = new Process {
+                StartInfo = {
+                    FileName = "/usr/bin/xclip",
+                    Arguments = "-i clipboard.tmp -selection clipboard"
+                }
+            };
             xclip.Start();
             xclip.WaitForExit();
-            
-            Process xdo = new Process();
-            xdo.StartInfo.FileName = "/usr/bin/xdotool";
-            xdo.StartInfo.Arguments = "search --name skype key ctrl+v+ctrl+shift+Return";
+
+            Process xdo = new Process {
+                StartInfo = {
+                    FileName = "/usr/bin/xdotool",
+                    Arguments = "search --name skype key ctrl+v+ctrl+shift+Return"
+                }
+            };
             xdo.Start();
             xdo.WaitForExit();
         }
