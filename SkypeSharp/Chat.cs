@@ -42,7 +42,7 @@ namespace SkypeSharp {
         /// <summary>
         ///     Uses xdotool to attempt to send skype a message
         /// </summary>
-        /// <param name="text"></param>
+        /// <param name="text">HTML formatted text to send</param>
         public void SendRaw(string text) {
             Skype.Send("OPEN CHAT " + ID);
 
