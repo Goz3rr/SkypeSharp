@@ -63,6 +63,17 @@ namespace SkypeSharp {
         /// </summary>
         public string Body {
             get { return body ?? (body = GetProperty("BODY")); }
+            set { SetProperty("BODY", value); }
+        }
+
+        private bool? isEditable;
+        /// <summary>
+        ///     Can this message be edited
+        /// </summary>
+        public bool IsEditable {
+            get {
+                return (bool)(isEditable ?? (isEditable = GetBoolProperty("IS_EDITABLE")));
+            }
         }
 
         private User user;
