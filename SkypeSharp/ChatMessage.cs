@@ -1,38 +1,10 @@
 ﻿using System;
 
 namespace SkypeSharp {
-    public enum ChatMessageStatus {
-        Unknown,
-        Sending,
-        Sent,
-        Received,
-        Read
-    }
-
-    public enum ChatMessageType {
-        Unknown,
-        SetTopic,
-        Said,
-        AddedMembers,
-        SawMembers,
-        CreatedChatWith,
-        Left,
-        PostedContacts,
-        Gap_In_Chat,
-        SetRole,
-        Kicked,
-        KickBanned,
-        SetOptions,
-        SetPicture,
-        SetGuidelines,
-        JoinedAsApplicant,
-        Emoted
-    }
-
     /// <summary>
     ///     Class representing a Skype CHATMESSAGE object
     /// </summary>
-    public class ChatMessage : SkypeObject {
+    public class ChatMessage : SkypeObject, IChatMessage {
         private string time;
         /// <summary>
         ///     Time of this message, UNIX timestamp
@@ -76,11 +48,11 @@ namespace SkypeSharp {
             }
         }
 
-        private User user;
+        private IUser user;
         /// <summary>
         ///     User that sent the message
         /// </summary>
-        public User User {
+        public IUser User {
             get { return user ?? (user = new User(Skype, SenderHandle)); }
         }
 
@@ -92,11 +64,11 @@ namespace SkypeSharp {
             get { return chatName ?? (chatName = GetProperty("CHATNAME")); }
         }
 
-        private Chat chat;
+        private IChat chat;
         /// <summary>
         ///     Chat this message is from
         /// </summary>
-        public Chat Chat {
+        public IChat Chat {
             get { return chat ?? (chat = new Chat(Skype, ChatName)); }
         }
 
@@ -105,7 +77,7 @@ namespace SkypeSharp {
             get { return (ChatMessageType)(type ?? (type = (ChatMessageType)Enum.Parse(typeof(ChatMessageType), GetProperty("TYPE"), true))); }
         }
 
-        public ChatMessage(Skype skype, string id) : base(skype, id, "CHATMESSAGE") {}
+        public ChatMessage(ISkype skype, string id) : base(skype, id, "CHATMESSAGE") {}
 
         /// <summary>
         ///     Mark message as seen

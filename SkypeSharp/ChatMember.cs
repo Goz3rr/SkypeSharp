@@ -1,17 +1,7 @@
 ﻿using System;
 
 namespace SkypeSharp {
-    public enum ChatRole {
-        Unknown,
-        Creator,
-        Master,
-        Helper,
-        User,
-        Listener,
-        Applicant
-    }
-
-    public class ChatMember : SkypeObject {
+    public class ChatMember : SkypeObject, IChatMember {
         private string chatName;
         /// <summary>
         ///     Handle? of the chat
@@ -48,6 +38,6 @@ namespace SkypeSharp {
             get { return (bool)(active ?? (active = GetBoolProperty("IS_ACTIVE"))); }
         }
 
-        public ChatMember(Skype skype, string id) : base(skype, id, "CHATMEMBER") {}
+        public ChatMember(ISkype skype, string id) : base(skype, id, "CHATMEMBER") {}
     }
 }

@@ -47,6 +47,13 @@
     <Compile Include="Chat.cs" />
     <Compile Include="ChatMember.cs" />
     <Compile Include="ChatMessage.cs" />
+    <Compile Include="ICall.cs" />
+    <Compile Include="IChat.cs" />
+    <Compile Include="IChatMember.cs" />
+    <Compile Include="IChatMessage.cs" />
+    <Compile Include="ISkypeObject.cs" />
+    <Compile Include="ISkype.cs" />
+    <Compile Include="IUser.cs" />
     <Compile Include="NotifiedEventArgs.cs" />
     <Compile Include="Skype.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

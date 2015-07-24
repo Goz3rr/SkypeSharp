@@ -9,7 +9,7 @@ namespace SkypeSharp {
     /// <summary>
     ///     Class for representing Skype API objects, provides Get and Set methods for properties
     /// </summary>
-    public abstract class SkypeObject {
+    public abstract class SkypeObject : ISkypeObject {
         /// <summary>
         ///     Skype internal ID
         /// </summary>
@@ -23,9 +23,9 @@ namespace SkypeSharp {
         /// <summary>
         ///     Skype DBUS interface
         /// </summary>
-        protected readonly Skype Skype;
+        protected readonly ISkype Skype;
 
-        protected SkypeObject(Skype skype, string id, string name) {
+        protected SkypeObject(ISkype skype, string id, string name) {
             Skype = skype;
             ID = id;
             Name = name;

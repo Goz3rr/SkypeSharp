@@ -7,11 +7,11 @@ namespace SkypeSharp {
     /// <summary>
     ///     Class representing a Skype CHAT object
     /// </summary>
-    public class Chat : SkypeObject {
+    public class Chat : SkypeObject, IChat {
         /// <summary>
         ///     List of users in this chat
         /// </summary>
-        public IEnumerable<User> Users {
+        public IEnumerable<IUser> Users {
             get {
                 string[] usernames = GetProperty("MEMBERS").Split(' ');
                 return usernames.Select(u => new User(Skype, u));
@@ -22,14 +22,14 @@ namespace SkypeSharp {
         ///     List of chatmembers, useful for changing roles
         ///     Skype broke this so it probably doesn't work
         /// </summary>
-        public IEnumerable<ChatMember> ChatMembers {
+        public IEnumerable<IChatMember> ChatMembers {
             get {
                 string[] members = GetProperty("MEMBEROBJECTS").Split(' ');
                 return members.Select(m => new ChatMember(Skype, m));
             }
         }
 
-        public Chat(Skype skype, string id) : base(skype, id, "CHAT") {}
+        public Chat(ISkype skype, string id) : base(skype, id, "CHAT") {}
 
         /// <summary>
         ///     Send a message to this chat

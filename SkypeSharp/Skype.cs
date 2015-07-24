@@ -16,13 +16,10 @@ namespace SkypeSharp {
         void Notify(string message);
     }
 
-    public delegate void MessageEventHandler(object sender, ChatMessage message, ChatMessageStatus status);
-    public delegate void CallEventHandler(object sender, Call call, CallStatus status);
-
     /// <summary>
     ///     Skype wrapper
     /// </summary>
-    public class Skype {
+    public class Skype : ISkype {
         private class SkypeResponseHandler : ISkypeResponse {
             public event NotifiedEventHandler OnNotified;
 

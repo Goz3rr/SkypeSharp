@@ -2,9 +2,8 @@
     /// <summary>
     ///     Class representing a Skype USER object
     /// </summary>
-    public class User : SkypeObject {
+    public class User : SkypeObject, IUser {
         private string fullName;
-
         /// <summary>
         ///     Friendly name
         /// </summary>
@@ -13,7 +12,6 @@
         }
 
         private string language;
-
         /// <summary>
         ///     Language as set by the user
         /// </summary>
@@ -22,7 +20,6 @@
         }
 
         private string country;
-
         /// <summary>
         ///     Country as set by the user
         /// </summary>
@@ -31,7 +28,6 @@
         }
 
         private string city;
-
         /// <summary>
         ///     Country as set by the user
         /// </summary>
@@ -39,6 +35,6 @@
             get { return city ?? (city = GetProperty("CITY")); }
         }
 
-        public User(Skype skype, string id) : base(skype, id, "USER") {}
+        public User(ISkype skype, string id) : base(skype, id, "USER") {}
     }
 }
