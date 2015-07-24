@@ -67,6 +67,10 @@ namespace SkypeSharp {
             };
             xdo.Start();
             xdo.WaitForExit();
+
+            if(xdo.ExitCode != 0) {
+                Debug.WriteLine("xdotool returned " + xdo.ExitCode);
+            }
         }
     }
 }
