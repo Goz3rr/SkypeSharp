@@ -185,5 +185,9 @@ namespace SkypeSharp {
         public string GetVersion() {
             return GetProperty("SKYPEVERSION");
         }
+
+        public IChat NewChat(string id) {
+            return new Chat(this, id);
+        }
     }
 }

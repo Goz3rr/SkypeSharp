@@ -17,5 +17,7 @@
         string GetProperty(params string[] property);
         void SetProperty(string name, string value);
         string GetVersion();
+
+        IChat NewChat(string id);
     }
 }
