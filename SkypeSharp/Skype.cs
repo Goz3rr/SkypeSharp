@@ -189,5 +189,9 @@ namespace SkypeSharp {
         public IChat NewChat(string id) {
             return new Chat(this, id);
         }
+
+        public IUser NewUser(string id) {
+            return new User(this, id);
+        }
     }
 }

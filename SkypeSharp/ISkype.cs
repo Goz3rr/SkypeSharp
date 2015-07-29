@@ -19,5 +19,6 @@
         string GetVersion();
 
         IChat NewChat(string id);
+        IUser NewUser(string id);
     }
 }
