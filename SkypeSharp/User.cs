@@ -34,7 +34,14 @@
         public string City {
             get { return city ?? (city = GetProperty("CITY")); }
         }
-
+        
         public User(ISkype skype, string id) : base(skype, id, "USER") {}
+
+        /// <summary>
+        ///     Accepts a pending friend request from this user
+        /// </summary>
+        public void Authorize() {
+            SetProperty("ISAUTHORIZED", "TRUE");
+        }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Threading;
 
 using DBus;
@@ -64,6 +65,11 @@ namespace SkypeSharp {
         ///     Event invoked when CALL status changes
         /// </summary>
         public event CallEventHandler OnCallStatusChanged;
+
+        /// <summary>
+        ///     Event invoked when USER status changes
+        /// </summary>
+        public event UserEventHandler OnUserStatusChanged;
 
         public Skype(string name, int protocol = 5) {
             Name = name;
@@ -144,6 +150,18 @@ namespace SkypeSharp {
                     Enum.TryParse(split[2], true, out status);
 
                     if(OnCallStatusChanged != null) OnCallStatusChanged.Invoke(this, call, status);
+                }
+            } else if(e.Message.StartsWith("USER ")) {
+                string data = e.Message.Substring("USER ".Length);
+                string[] split = data.Split(' ');
+
+                UserStatus status;
+                if(Enum.TryParse(split[1], true, out status)) {
+                    User user = new User(this, split[0]);
+
+                    if(OnUserStatusChanged != null) OnUserStatusChanged.Invoke(this, user, status, split.Length > 2 ? String.Join(" ", split.Skip(2)) : null);
+                } else {
+                    Console.WriteLine("can't parse " + data);
                 }
             }
         }
