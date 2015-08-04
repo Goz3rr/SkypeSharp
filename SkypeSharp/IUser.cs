@@ -2,7 +2,11 @@
     public enum UserStatus {
         OnlineStatus,
         BuddyStatus,
-        ReceivedAuthRequest
+        ReceivedAuthRequest,
+        IsAuthorized,
+        IsBlocked,
+        Timezone,
+        NROF_AUTHED_BUDDIES
     }
 
     public interface IUser : ISkypeObject {
