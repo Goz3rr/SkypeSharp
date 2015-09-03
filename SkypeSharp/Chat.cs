@@ -44,32 +44,37 @@ namespace SkypeSharp {
         /// </summary>
         /// <param name="text">HTML formatted text to send</param>
         public void SendRaw(string text) {
-            Skype.Send("OPEN CHAT " + ID);
+            int count = 0;
 
-            using(StreamWriter s = new StreamWriter("clipboard.tmp")) {
-                s.Write(text);
-            }
+            while(count < 2) {
+                Skype.Send("OPEN CHAT " + ID);
 
-            Process xclip = new Process {
-                StartInfo = {
-                    FileName = "/usr/bin/xclip",
-                    Arguments = "-i clipboard.tmp -selection clipboard"
+                using(StreamWriter s = new StreamWriter("clipboard.tmp")) {
+                    s.Write(text);
                 }
-            };
-            xclip.Start();
-            xclip.WaitForExit();
 
-            Process xdo = new Process {
-                StartInfo = {
-                    FileName = "/usr/bin/xdotool",
-                    Arguments = "search --name skype key ctrl+v+ctrl+shift+Return"
-                }
-            };
-            xdo.Start();
-            xdo.WaitForExit();
+                Process xclip = new Process {
+                    StartInfo = {
+                        FileName = "/usr/bin/xclip",
+                        Arguments = "-i clipboard.tmp -selection clipboard"
+                    }
+                };
+                xclip.Start();
+                xclip.WaitForExit();
 
-            if(xdo.ExitCode != 0) {
-                Debug.WriteLine("xdotool returned " + xdo.ExitCode);
+                Process xdo = new Process {
+                    StartInfo = {
+                        FileName = "/usr/bin/xdotool",
+                        Arguments = "search --name skype key ctrl+v+ctrl+shift+Return"
+                    }
+                };
+                xdo.Start();
+                xdo.WaitForExit();
+
+                if(xdo.ExitCode != 0) {
+                    Debug.WriteLine("xdotool returned " + xdo.ExitCode);
+                    count++;
+                } else break;
             }
         }
     }
