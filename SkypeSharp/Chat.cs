@@ -65,7 +65,7 @@ namespace SkypeSharp {
                 Process xdo = new Process {
                     StartInfo = {
                         FileName = "/usr/bin/xdotool",
-                        Arguments = "search --name skype key ctrl+v+ctrl+shift+Return"
+                        Arguments = "key ctrl+v+ctrl+shift+Return"
                     }
                 };
                 xdo.Start();
